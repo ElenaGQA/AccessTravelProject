@@ -81,24 +81,32 @@ describe('access travel main manu sanity test suite', () => {
         cy.get(children_age4).should('be.visible')
         cy.get(children_age4).clear().type('5').should('have.value', '5', { force: true })
         cy.get(search_button).click()
-        cy.url().should('include', 'Filter.ChildrensAge','13','11','9','7','5')
+        cy.url().should('include', 'Filter.ChildrensAge', '13', '11', '9', '7', '5')
 
     })
 
-    it('negative test - invalid date ', () => {
+    it('negative test - invalid checkin date ', () => {
         cy.get(destination).select('London')
         cy.get(checkin).clear().type('2023-11-11').invoke("val").should('eq', '2023-11-11')
-        cy.get(checkout).clear().type('2023-12-12').invoke("val").should('eq', '2023-12-12')
         cy.get(search_button).click()
-        cy.get(error).should ('be.visible').should('have.text','Filter_CheckIn_MinValue_en-US')
+        cy.get(error).should('be.visible').should('have.text', 'Filter_CheckIn_MinValue_en-US')
 
     })
+
+    it('negative test - invalid checkout date ', () => {
+        cy.get(destination).select('London')
+        cy.get(checkout).clear().type('2023-12-12').invoke("val").should('eq', '2023-12-12')
+        cy.get(search_button).click()
+        cy.get(error).should('be.visible').should('have.text', 'Invalid Check out Date')
+
+    })
+
 
     it('negative test - invalid number of adults ', () => {
         cy.get(destination).select('London')
         cy.get(adults_number).clear().type(10).invoke("val").should('eq', '10')
         cy.get(search_button).click()
-        cy.get(error).should ('be.visible').should('have.text','Invalid value')
+        cy.get(error).should('be.visible').should('have.text', 'Invalid value')
 
     })
 
@@ -106,7 +114,7 @@ describe('access travel main manu sanity test suite', () => {
         cy.get(destination).select('London')
         cy.get(children_number).clear().type(11).invoke("val").should('eq', '11')
         cy.get(search_button).click()
-        cy.get(error).should ('be.visible').should('have.text','Invalid number')
+        cy.get(error).should('be.visible').should('have.text', 'Invalid number')
 
     })
 
